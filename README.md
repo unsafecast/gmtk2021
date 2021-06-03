@@ -5,6 +5,7 @@ So, to build this, clone [emsdk](https://github.com/emscripten-core/emsdk) somew
 ```bash
 $ ./emsdk install latest
 $ ./emsdk activate latest
+$ source emsdk_env.sh  # (This can be any other env file, depending on the shell)
 ```
 
 After you do that, you should be able to run `emcc`. If it works, you can get the dependencies. Go into the game's repository and do
