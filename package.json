@@ -1,0 +1,10 @@
+{
+  "name": "gmtk2021",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.3.1"
+  },
+  "scripts": {
+    "start": "parcel serve ./src/index.html",
+    "build": "parcel build ./src/index.html"
+  }
+}
