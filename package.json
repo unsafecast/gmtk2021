@@ -5,6 +5,6 @@
   },
   "scripts": {
     "start": "parcel serve ./src/index.html",
-    "build": "parcel build ./src/index.html"
+    "build": "parcel build ./src/index.html --dist-dir docs"
   }
 }
