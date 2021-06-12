@@ -25,8 +25,6 @@ export class Player extends CollidingEntity {
 	    this.x += this.step;
 	}
 
-	this.state.rend.cameraX = -this.x - this.w / 2;
-
 	this.lastY = this.y;
 	this.y += this.step;
     }

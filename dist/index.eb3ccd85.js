@@ -462,15 +462,13 @@ class Renderer {
         this.context = this.canvas.getContext("2d");
         this.context.scale(2, 2);
         this.context.imageSmoothingEnabled = false;
-        this.cameraX = 0;
-        this.cameraY = 0;
     }
     drawRect(x, y, w, h, style = "white") {
         this.context.fillStyle = style;
-        this.context.fillRect(x + this.cameraX + this.canvas.width / 4, y, w, h);
+        this.context.fillRect(x, y, w, h);
     }
     drawImg(img, x, y, w, h) {
-        this.context.drawImage(img, x + this.cameraX + this.canvas.width / 4, y, w, h);
+        this.context.drawImage(img, x, y, w, h);
     }
     clear() {
         this.context.fillStyle = this.clearColor;
@@ -837,7 +835,6 @@ class Player extends _collidingEntityTs.CollidingEntity {
         if (this.lastY == this.y) this.y -= this.step;
         if (this.state.keysPressed['a']) this.x -= this.step;
         if (this.state.keysPressed['d']) this.x += this.step;
-        this.state.rend.cameraX = -this.x - this.w / 2;
         this.lastY = this.y;
         this.y += this.step;
     }
