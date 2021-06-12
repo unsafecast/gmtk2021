@@ -1,22 +1,17 @@
 import { Scene } from "./scene.ts";
 import { State } from "./state.ts";
 import { Entity } from "./entity.ts";
+import { Player } from "./player.ts";
 
 export class TestingScene extends Scene {
     constructor(state: State) {
 	super(state);
 
-	let entity = new Entity(state.images["duck2"]);
-	entity.w = entity.h = 100;
-	this.addEntity("bob", entity);
+	this.addEntity("player", new Player(this.state));
     }
     
     tick() {
 	super.tick();
-
-	if (this.state.keysPressed['d']) {
-	    this.getEntity("bob").x += 1;
-	}
     }
 
     draw(rend: Renderer) {

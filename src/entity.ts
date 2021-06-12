@@ -1,15 +1,18 @@
 import { Renderer } from "./renderer.ts";
+import { State } from "./state.ts";
 
 export class Entity {
     private image: Image;
+    private state: State;
 
     public x: number = 0;
     public y: number = 0;
     public w: number = 10;
     public h: number = 10;
 
-    constructor(image: Image) {
+    constructor(state: State, image: Image) {
 	this.image = image;
+	this.state = state;
     }
 
     tick() {
