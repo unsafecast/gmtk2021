@@ -40,8 +40,10 @@ export class State {
 
 	this.curScene?.tick();
 	this.curScene?.draw(this.rend);
-	
-	window.requestAnimationFrame(this.tick.bind(this));
+
+	setTimeout(() => {
+	    window.requestAnimationFrame(this.tick.bind(this));
+	}, 1000 / 60);	
     }
 }
 

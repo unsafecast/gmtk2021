@@ -442,7 +442,9 @@ class State {
         this.rend.clear();
         this.curScene?.tick();
         this.curScene?.draw(this.rend);
-        window.requestAnimationFrame(this.tick.bind(this));
+        setTimeout(()=>{
+            window.requestAnimationFrame(this.tick.bind(this));
+        }, 1000 / 60);
     }
 }
 
@@ -827,7 +829,7 @@ class Player extends _collidingEntityTs.CollidingEntity {
     constructor(state){
         super(state, state.images["character0"]);
         this.canMove = true;
-        this.step = 3;
+        this.step = 7;
         this.lastY = 0;
     }
     tick() {

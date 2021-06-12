@@ -6,7 +6,7 @@ export class Player extends CollidingEntity {
     constructor(state: State) {
 	super(state, state.images["character0"]);
 	this.canMove = true;
-	this.step = 3;
+	this.step = 7;
 	this.lastY = 0;
     }
     
