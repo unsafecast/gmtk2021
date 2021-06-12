@@ -6,10 +6,12 @@ import { CollidingEntity } from "./collidingEntity.ts";
 export class Scene {
     private entities: Map<string, Entity>;
     private state: State;
+    private background: Image;
 
-    constructor(state: State) {
+    constructor(state: State, background: Image = null) {
 	this.state = state;
 	this.entities = new Map();
+	this.background = background;
     }
 
     addEntity(name: string, entity: Entity) {
@@ -71,6 +73,10 @@ export class Scene {
     }
 
     draw(rend: Renderer) {
+	if (this.background != null) {
+	    rend.drawImg(this.background, 0, 0, rend.canvas.width, rend.canvas.height);
+	}
+	
 	for (const entity of this.entities.entries()) {
 	    entity[1].draw(rend);
 	}
