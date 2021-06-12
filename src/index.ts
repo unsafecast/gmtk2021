@@ -25,10 +25,14 @@ const main = () => {
 	"grass": "grass.png",
 	"character0": "character/frame01.png",
 	"floor01": "terrain/floor01.png",
+	"floor02": "terrain/floor02.png",
 	"special01": "terrain/special01.png",
 	"special02": "terrain/special02.png",
 	"special03": "terrain/special03.png",
 	"prize": "prize.png",
+	"enemy01": "enemy/enemy1frame01.png",
+	"enemy02": "enemy/enemy2frame01.png",
+	"enemy03": "enemy/enemy3frame01.png"
     };
 
     loadImagesAndStart(images, (loaded) => {

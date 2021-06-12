@@ -1,6 +1,9 @@
 import { Entity } from "./entity.ts";
 import { State } from "./state.ts";
 import { Player } from "./player.ts";
+import { Enemy1 } from "./enemy1.ts";
+import { Enemy2 } from "./enemy2.ts";
+import { Enemy3 } from "./enemy3.ts";
 import { CollidingEntity } from "./collidingEntity.ts";
 
 export class Scene {
@@ -40,6 +43,10 @@ export class Scene {
 			entity = new CollidingEntity(this.state, this.state.images["floor01"]);
 			name = `floor01_${Math.random()}`;
 			break;
+			case '9':
+			entity = new CollidingEntity(this.state, this.state.images["floor02"]);
+			name = `floor02_${Math.random()}`;
+			break;
 			case '1':
 			entity = new CollidingEntity(this.state, this.state.images["special01"]);
 			name = `special01_${Math.random()}`;
@@ -55,6 +62,18 @@ export class Scene {
 			case 'o':
 			entity = new CollidingEntity(this.state, this.state.images["prize"]);
 			name = "prize";
+			break;
+			case 'b':
+			entity = new Enemy1(this.state);
+			name = "enemy01";
+			break;
+			case 'r':
+			entity = new Enemy2(this.state);
+			name = "enemy02";
+			break;
+			case 'v':
+			entity = new Enemy3(this.state);
+			name = "enemy03";
 			break;
 		}
 

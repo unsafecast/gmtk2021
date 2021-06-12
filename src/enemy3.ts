@@ -1,13 +1,11 @@
 import { Entity } from "./entity.ts";
 import { CollidingEntity } from "./collidingEntity.ts";
 import { State } from "./state.ts";
-import { tilemap } from "./testingScene.ts";
-import { getEntity } from "./scene.ts";
+import { Player } from "./player.ts";
 
-
-export class Player extends CollidingEntity {
+export class Enemy3 extends CollidingEntity {
     constructor(state: State) {
-	super(state, state.images["character0"]);
+	super(state, state.images["enemy03"]);
 	this.canMove = true;
 	this.step = 5;
 	this.lastY = 0;
@@ -20,17 +18,12 @@ export class Player extends CollidingEntity {
 	    this.y -= this.step;
 	}
 
-	if (this.state.keysPressed['a']) {
-	    this.x -= this.step;
-	}
-	
-	if (this.state.keysPressed[' ']) {
-		this.y -= this.step * 2;
+	if (Player.x > this.x) {
+		this.x += this.step;
+	} else {
+		this.x -= this.step;
 	}
 
-	if (this.state.keysPressed['d']) {
-	    this.x += this.step;
-	}
 
 	this.lastY = this.y;
 	this.y += this.step;
