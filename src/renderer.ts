@@ -1,6 +1,6 @@
 
 export class Renderer {
-    public clearColor: string = "black";
+    public clearColor: string = "#4a4a4a";
     
     constructor(elem: HTMLCanvasElement) {
 	this.canvas = elem;
