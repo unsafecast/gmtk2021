@@ -4,7 +4,7 @@ import { State } from "./state.ts";
 
 export class Player extends CollidingEntity {
     constructor(state: State) {
-	super(state, state.images["duck"]);
+	super(state, state.images["localDuck"]);
 	this.canMove = true;
     }
     

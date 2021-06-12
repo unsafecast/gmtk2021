@@ -1,1 +1,0 @@
-{"mappings":"AAEIA,QAAQC,IAAG","sources":["src/index.ts"],"sourcesContent":["\nconst main = () => {\n    console.log(\"testing\");\n}\n\nmain();\n\n"],"names":["console","log"],"version":3,"file":"index.aa60f7c6.js.map"}
