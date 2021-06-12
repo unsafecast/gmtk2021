@@ -1,5 +1,7 @@
 
 export class Renderer {
+    public clearColor: string = "black";
+    
     constructor(elem: HTMLCanvasElement) {
 	this.canvas = elem;
 	this.canvas.width = window.innerWidth;
@@ -18,7 +20,8 @@ export class Renderer {
     }
 
     clear() {
-	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	this.context.fillStyle = this.clearColor;
+	this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }
 
