@@ -6,6 +6,8 @@ export class State {
     private images: Dictionary<string, Image>;
     private rend: Renderer;
     private curScene: Scene;
+
+    public keysPressed;
     
     constructor(images: Dictionary<string, Image>) {
 	this.images = images;
@@ -14,6 +16,15 @@ export class State {
 	);
 
 	this.curScene = null;
+	this.keysPressed = {};
+
+	window.addEventListener("keydown", (event) => {
+	    this.keysPressed[event.key] = true;
+	});
+
+	window.addEventListener("keyup", (event) => {
+	    this.keysPressed[event.key] = false;
+	});
     }
 
     setScene(scene: Scene) {

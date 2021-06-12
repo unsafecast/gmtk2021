@@ -13,6 +13,10 @@ export class TestingScene extends Scene {
     
     tick() {
 	super.tick();
+
+	if (this.state.keysPressed['d']) {
+	    this.getEntity("bob").x += 1;
+	}
     }
 
     draw(rend: Renderer) {
