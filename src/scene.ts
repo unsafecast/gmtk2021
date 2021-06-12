@@ -36,6 +36,26 @@ export class Scene {
 			entity = new CollidingEntity(this.state, this.state.images["grass"]);
 			name = `grass_${Math.random()}`;
 			break;
+			case 'f':
+			entity = new CollidingEntity(this.state, this.state.images["floor01"]);
+			name = `floor01_${Math.random()}`;
+			break;
+			case '1':
+			entity = new CollidingEntity(this.state, this.state.images["special01"]);
+			name = `special01_${Math.random()}`;
+			break;
+			case '2':
+			entity = new CollidingEntity(this.state, this.state.images["special02"]);
+			name = `special02_${Math.random()}`;
+			break;
+			case '3':
+			entity = new CollidingEntity(this.state, this.state.images["special03"]);
+			name = `special03_${Math.random()}`;
+			break;
+			case 'o':
+			entity = new CollidingEntity(this.state, this.state.images["prize"]);
+			name = "prize";
+			break;
 		}
 
 		if (entity != null) {
