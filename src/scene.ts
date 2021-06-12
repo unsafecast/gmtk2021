@@ -1,6 +1,7 @@
 import { Entity } from "./entity.ts";
 import { State } from "./state.ts";
 import { Player } from "./player.ts";
+import { CollidingEntity } from "./collidingEntity.ts";
 
 export class Scene {
     private entities: Map<string, Entity>;
@@ -28,6 +29,11 @@ export class Scene {
 		    case 'p':
 			entity = new Player(this.state);
 			name = "player";
+			break;
+		    case 'g':
+			entity = new CollidingEntity(this.state, this.state.images["grass"]);
+			name = `grass_${Math.random()}`;
+			break;
 		}
 
 		if (entity != null) {

@@ -22,6 +22,7 @@ const loadImagesAndStart = (images: Dictionary<string, string>, startFun: any) =
 const main = () => {
     let images = {
 	"localDuck": "duck.png",
+	"grass": "grass.png",
     };
 
     loadImagesAndStart(images, (loaded) => {
