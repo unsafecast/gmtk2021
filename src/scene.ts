@@ -1,5 +1,6 @@
 import { Entity } from "./entity.ts";
 import { State } from "./state.ts";
+import { Player } from "./player.ts";
 
 export class Scene {
     private entities: Map<string, Entity>;
@@ -16,6 +17,26 @@ export class Scene {
 
     getEntity(name: string) {
 	return this.entities.get(name);
+    }
+
+    loadTilemap(tilemap: Array<Array<string>>) {
+	tilemap.forEach((row, y) => {
+	    row.forEach((thing, x) => {
+		let entity: Entity = null;
+		let name = "";
+		switch (thing) {
+		    case 'p':
+			entity = new Player(this.state);
+			name = "player";
+		}
+
+		if (entity != null) {
+		    entity.x = x * 32;
+		    entity.y = y * 32;
+		    this.addEntity(name, entity);
+		}
+	    });
+	});
     }
 
     tick() {

@@ -4,17 +4,16 @@ import { Entity } from "./entity.ts";
 import { Player } from "./player.ts";
 import { CollidingEntity } from "./collidingEntity.ts";
 
+const tilemap = [
+    [ 'a', 'p', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a' ],
+    [ 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g' ]
+];
+
 export class TestingScene extends Scene {
     constructor(state: State) {
 	super(state);
 
-	this.addEntity("player", new Player(this.state));
-
-	let x = new CollidingEntity(this.state, this.state.images["duck2"]);
-	x.w = x.h = 100;
-	x.x = 200;
-	x.y += 100;
-	this.addEntity("thing", x);
+	this.loadTilemap(tilemap);
     }
     
     tick() {

@@ -8,6 +8,7 @@ export class Renderer {
 	this.canvas.height = window.innerHeight;
 	
 	this.context = this.canvas.getContext("2d");
+	this.context.scale(2, 2);
     }
 
     drawRect(x: number, y: number, w: number, h: number, style: string = "white") {

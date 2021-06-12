@@ -7,8 +7,8 @@ export class Entity {
 
     public x: number = 0;
     public y: number = 0;
-    public w: number = 10;
-    public h: number = 10;
+    public w: number = 32;
+    public h: number = 32;
 
     public canCollide = false;
 
