@@ -401,7 +401,8 @@ const loadImagesAndStart = (images, startFun)=>{
 const main = ()=>{
     let images = {
         "localDuck": "duck.png",
-        "grass": "grass.png"
+        "grass": "grass.png",
+        "character0": "character/frame01.png"
     };
     loadImagesAndStart(images, (loaded)=>{
         let state = new _stateTs.State(loaded);
@@ -445,7 +446,35 @@ class State {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR","./renderer.ts":"62RPR"}],"367CR":[function(require,module,exports) {
+},{"./renderer.ts":"62RPR","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"62RPR":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Renderer", ()=>Renderer
+);
+class Renderer {
+    constructor(elem){
+        this.clearColor = "black";
+        this.canvas = elem;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.context = this.canvas.getContext("2d");
+        this.context.scale(2, 2);
+        this.context.imageSmoothingEnabled = false;
+    }
+    drawRect(x, y, w, h, style = "white") {
+        this.context.fillStyle = style;
+        this.context.fillRect(x, y, w, h);
+    }
+    drawImg(img, x, y, w, h) {
+        this.context.drawImage(img, x, y, w, h);
+    }
+    clear() {
+        this.context.fillStyle = this.clearColor;
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"367CR":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -477,34 +506,7 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"62RPR":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Renderer", ()=>Renderer
-);
-class Renderer {
-    constructor(elem){
-        this.clearColor = "black";
-        this.canvas = elem;
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        this.context = this.canvas.getContext("2d");
-        this.context.scale(2, 2);
-    }
-    drawRect(x, y, w, h, style = "white") {
-        this.context.fillStyle = style;
-        this.context.fillRect(x, y, w, h);
-    }
-    drawImg(img, x, y, w, h) {
-        this.context.drawImage(img, x, y, w, h);
-    }
-    clear() {
-        this.context.fillStyle = this.clearColor;
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"52G5X":[function(require,module,exports) {
+},{}],"52G5X":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "TestingScene", ()=>TestingScene
@@ -619,7 +621,7 @@ class Scene {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR","./player.ts":"5J76T","./collidingEntity.ts":"nyrtV"}],"5J76T":[function(require,module,exports) {
+},{"./player.ts":"5J76T","./collidingEntity.ts":"nyrtV","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"5J76T":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Player", ()=>Player
@@ -627,7 +629,7 @@ parcelHelpers.export(exports, "Player", ()=>Player
 var _collidingEntityTs = require("./collidingEntity.ts");
 class Player extends _collidingEntityTs.CollidingEntity {
     constructor(state){
-        super(state, state.images["localDuck"]);
+        super(state, state.images["character0"]);
         this.canMove = true;
     }
     tick() {
@@ -652,6 +654,7 @@ class CollidingEntity extends _entityTs.Entity {
         this.canCollide = true;
     }
     collided(entity) {
+        // WARNING: This assumes the player moves 5px per frame. NEEDS TO CHANGE!!!
         this.x -= 5;
         if (this.collidesWith(entity)) this.x += 10;
         if (this.collidesWith(entity)) {

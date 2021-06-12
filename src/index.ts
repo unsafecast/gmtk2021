@@ -23,6 +23,7 @@ const main = () => {
     let images = {
 	"localDuck": "duck.png",
 	"grass": "grass.png",
+	"character0": "character/frame01.png",
     };
 
     loadImagesAndStart(images, (loaded) => {

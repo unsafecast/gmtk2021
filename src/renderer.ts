@@ -9,6 +9,7 @@ export class Renderer {
 	
 	this.context = this.canvas.getContext("2d");
 	this.context.scale(2, 2);
+	this.context.imageSmoothingEnabled = false
     }
 
     drawRect(x: number, y: number, w: number, h: number, style: string = "white") {
