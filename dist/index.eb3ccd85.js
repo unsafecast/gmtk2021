@@ -515,7 +515,188 @@ var _sceneTs = require("./scene.ts");
 const tilemap = [
     [
         'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a'
+    ],
+    [
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a'
+    ],
+    [
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a'
+    ],
+    [
+        'a',
         'p',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a'
+    ],
+    [
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a'
+    ],
+    [
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a'
+    ],
+    [
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
         'a',
         'a',
         'a',
@@ -533,6 +714,19 @@ const tilemap = [
         'g',
         'g',
         'g',
+        'g',
+        'g',
+        'g',
+        'g',
+        'g',
+        'g',
+        'g',
+        'g',
+        'g',
+        'g',
+        'g',
+        'a',
+        'a',
         'g',
         'g',
         'g',
@@ -631,14 +825,16 @@ class Player extends _collidingEntityTs.CollidingEntity {
     constructor(state){
         super(state, state.images["character0"]);
         this.canMove = true;
+        this.step = 3;
+        this.lastY = 0;
     }
     tick() {
         super.tick();
-        // Temporary obviously
-        if (this.state.keysPressed['a']) this.x -= 5;
-        if (this.state.keysPressed['d']) this.x += 5;
-        if (this.state.keysPressed['w']) this.y -= 5;
-        if (this.state.keysPressed['s']) this.y += 5;
+        if (this.lastY == this.y) this.y -= this.step;
+        if (this.state.keysPressed['a']) this.x -= this.step;
+        if (this.state.keysPressed['d']) this.x += this.step;
+        this.lastY = this.y;
+        this.y += this.step;
     }
 }
 
@@ -652,16 +848,17 @@ class CollidingEntity extends _entityTs.Entity {
     constructor(state, image){
         super(state, image);
         this.canCollide = true;
+        this.step = 1;
     }
     collided(entity) {
-        // WARNING: This assumes the player moves 5px per frame. NEEDS TO CHANGE!!!
-        this.x -= 5;
-        if (this.collidesWith(entity)) this.x += 10;
+        // WARNING: This assumes the entity moves 5px per frame. NEEDS TO CHANGE!!!
+        this.x -= this.step;
+        if (this.collidesWith(entity)) this.x += this.step * 2;
         if (this.collidesWith(entity)) {
-            this.x -= 5;
-            this.y -= 5;
+            this.x -= this.step;
+            this.y -= this.step;
         }
-        if (this.collidesWith(entity)) this.y += 10;
+        if (this.collidesWith(entity)) this.y += this.step * 2;
     }
 }
 

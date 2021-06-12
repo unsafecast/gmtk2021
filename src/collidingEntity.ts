@@ -5,22 +5,22 @@ export class CollidingEntity extends Entity {
     constructor(state: State, image: Image) {
 	super(state, image);
 	this.canCollide = true;
+	this.step = 1;
     }
     
     collided(entity: Entity) {
-	// WARNING: This assumes the player moves 5px per frame. NEEDS TO CHANGE!!!
-
+	// WARNING: This assumes the entity moves 5px per frame. NEEDS TO CHANGE!!!
 	
-	this.x -= 5;
+	this.x -= this.step;
 	if (this.collidesWith(entity)) {
-	    this.x += 10;
+	    this.x += this.step * 2;
 	}
 	if (this.collidesWith(entity)) {
-	    this.x -= 5;
-	    this.y -= 5;
+	    this.x -= this.step;
+	    this.y -= this.step;
 	}
 	if (this.collidesWith(entity)) {
-	    this.y += 10;
+	    this.y += this.step * 2;
 	}
     }
 }

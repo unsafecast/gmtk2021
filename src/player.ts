@@ -6,28 +6,27 @@ export class Player extends CollidingEntity {
     constructor(state: State) {
 	super(state, state.images["character0"]);
 	this.canMove = true;
+	this.step = 3;
+	this.lastY = 0;
     }
     
     tick() {
 	super.tick();
 
-	// Temporary obviously
+	if (this.lastY == this.y) {
+	    this.y -= this.step;
+	}
 
-	    if (this.state.keysPressed['a']) {
-		this.x -= 5;
-	    }
+	if (this.state.keysPressed['a']) {
+	    this.x -= this.step;
+	}
 	
-	    if (this.state.keysPressed['d']) {
-		this.x += 5;
-	    }
+	if (this.state.keysPressed['d']) {
+	    this.x += this.step;
+	}
 
-	    if (this.state.keysPressed['w']) {
-		this.y -= 5;
-	    }
-
-	    if (this.state.keysPressed['s']) {
-		this.y += 5;
-	    }
+	this.lastY = this.y;
+	this.y += this.step;
     }
 }
 
