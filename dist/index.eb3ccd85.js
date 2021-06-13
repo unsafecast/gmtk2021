@@ -402,7 +402,16 @@ const main = ()=>{
     let images = {
         "localDuck": "duck.png",
         "grass": "grass.png",
-        "character0": "character/frame01.png"
+        "character0": "character/frame01.png",
+        "floor01": "terrain/floor01.png",
+        "floor02": "terrain/floor02.png",
+        "special01": "terrain/special01.png",
+        "special02": "terrain/special02.png",
+        "special03": "terrain/special03.png",
+        "prize": "prize.png",
+        "enemy01": "enemy/enemy1frame01.png",
+        "enemy02": "enemy/enemy2frame01.png",
+        "enemy03": "enemy/enemy3frame01.png"
     };
     loadImagesAndStart(images, (loaded)=>{
         let state = new _stateTs.State(loaded);
@@ -455,7 +464,7 @@ parcelHelpers.export(exports, "Renderer", ()=>Renderer
 );
 class Renderer {
     constructor(elem){
-        this.clearColor = "black";
+        this.clearColor = "#4a4a4a";
         this.canvas = elem;
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
@@ -540,8 +549,7 @@ const tilemap = [
         'a',
         'a',
         'a',
-        'a',
-        'a'
+        'a', 
     ],
     [
         'a',
@@ -568,8 +576,7 @@ const tilemap = [
         'a',
         'a',
         'a',
-        'a',
-        'a'
+        'a', 
     ],
     [
         'a',
@@ -596,11 +603,10 @@ const tilemap = [
         'a',
         'a',
         'a',
-        'a',
-        'a'
+        'a', 
     ],
     [
-        'a',
+        '2',
         'p',
         'a',
         'a',
@@ -623,11 +629,12 @@ const tilemap = [
         'a',
         'a',
         'a',
-        'a',
-        'a',
-        'a'
+        'b',
+        'o', 
     ],
     [
+        'f',
+        '2',
         'a',
         'a',
         'a',
@@ -640,6 +647,7 @@ const tilemap = [
         'a',
         'a',
         'a',
+        '1',
         'a',
         'a',
         'a',
@@ -647,15 +655,14 @@ const tilemap = [
         'a',
         'a',
         'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a'
+        '3',
+        '3',
+        '3', 
     ],
     [
+        'f',
+        'f',
+        '2',
         'a',
         'a',
         'a',
@@ -667,77 +674,179 @@ const tilemap = [
         'a',
         'a',
         'a',
+        '1',
         'a',
         'a',
         'a',
         'a',
         'a',
         'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a'
+        '2',
+        '3',
+        '2',
+        '2', 
     ],
     [
+        'f',
+        'f',
+        'f',
+        '2',
+        'a',
+        'a',
+        'a',
+        '2',
         'a',
         'a',
         'a',
         'a',
         'a',
         'a',
+        '1',
         'a',
         'a',
         'a',
         'a',
         'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a',
-        'a'
+        '3',
+        '3',
+        '3',
+        '2',
+        '2', 
     ],
     [
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'a',
-        'a',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g',
-        'g'
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '9',
+        '9',
+        '1',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '9',
+        '9',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '9',
+        '9',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f', 
     ]
 ];
 class TestingScene extends _sceneTs.Scene {
@@ -759,6 +868,9 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Scene", ()=>Scene
 );
 var _playerTs = require("./player.ts");
+var _enemy1Ts = require("./enemy1.ts");
+var _enemy2Ts = require("./enemy2.ts");
+var _enemy3Ts = require("./enemy3.ts");
 var _collidingEntityTs = require("./collidingEntity.ts");
 class Scene {
     constructor(state, background = null){
@@ -785,6 +897,42 @@ class Scene {
                     case 'g':
                         entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["grass"]);
                         name = `grass_${Math.random()}`;
+                        break;
+                    case 'f':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["floor01"]);
+                        name = `floor01_${Math.random()}`;
+                        break;
+                    case '9':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["floor02"]);
+                        name = `floor02_${Math.random()}`;
+                        break;
+                    case '1':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special01"]);
+                        name = `special01_${Math.random()}`;
+                        break;
+                    case '2':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special02"]);
+                        name = `special02_${Math.random()}`;
+                        break;
+                    case '3':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special03"]);
+                        name = `special03_${Math.random()}`;
+                        break;
+                    case 'o':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["prize"]);
+                        name = "prize";
+                        break;
+                    case 'b':
+                        entity = new _enemy1Ts.Enemy1(this.state);
+                        name = "enemy01";
+                        break;
+                    case 'r':
+                        entity = new _enemy2Ts.Enemy2(this.state);
+                        name = "enemy02";
+                        break;
+                    case 'v':
+                        entity = new _enemy3Ts.Enemy3(this.state);
+                        name = "enemy03";
                         break;
                 }
                 if (entity != null) {
@@ -817,7 +965,7 @@ class Scene {
     }
 }
 
-},{"./player.ts":"5J76T","./collidingEntity.ts":"nyrtV","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"5J76T":[function(require,module,exports) {
+},{"./player.ts":"5J76T","./collidingEntity.ts":"nyrtV","@parcel/transformer-js/src/esmodule-helpers.js":"367CR","./enemy1.ts":"3TlQi","./enemy2.ts":"59try","./enemy3.ts":"pRlYD"}],"5J76T":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Player", ()=>Player
@@ -827,14 +975,24 @@ class Player extends _collidingEntityTs.CollidingEntity {
     constructor(state){
         super(state, state.images["character0"]);
         this.canMove = true;
-        this.step = 7;
+        this.step = 5;
         this.lastY = 0;
     }
     tick() {
         super.tick();
         if (this.lastY == this.y) this.y -= this.step;
         if (this.state.keysPressed['a']) this.x -= this.step;
+        if (this.state.keysPressed[' ']) this.y -= this.step * 2;
         if (this.state.keysPressed['d']) this.x += this.step;
+        if (this.state.keysPressed['b']) {
+            for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special02_")) this.state.curScene.entities.delete(entity[0]);
+        }
+        if (this.state.keysPressed['g']) {
+            for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special01_")) this.state.curScene.entities.delete(entity[0]);
+        }
+        if (this.state.keysPressed['r']) {
+            for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special03_")) this.state.curScene.entities.delete(entity[0]);
+        }
         this.lastY = this.y;
         this.y += this.step;
     }
@@ -899,6 +1057,78 @@ class Entity {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}]},["6KnHJ","5YOvx"], "5YOvx", "parcelRequiref6ba")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"3TlQi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Enemy1", ()=>Enemy1
+);
+var _collidingEntityTs = require("./collidingEntity.ts");
+var _playerTs = require("./player.ts");
+class Enemy1 extends _collidingEntityTs.CollidingEntity {
+    constructor(state){
+        super(state, state.images["enemy01"]);
+        this.canMove = true;
+        this.step = 3;
+        this.lastY = 0;
+    }
+    tick() {
+        super.tick();
+        if (this.lastY == this.y) this.y -= this.step;
+        if (_playerTs.Player.x > this.x) this.x += this.step;
+        else this.x -= this.step;
+        this.lastY = this.y;
+        this.y += this.step;
+    }
+}
+
+},{"./collidingEntity.ts":"nyrtV","./player.ts":"5J76T","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"59try":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Enemy2", ()=>Enemy2
+);
+var _collidingEntityTs = require("./collidingEntity.ts");
+var _playerTs = require("./player.ts");
+class Enemy2 extends _collidingEntityTs.CollidingEntity {
+    constructor(state){
+        super(state, state.images["enemy02"]);
+        this.canMove = true;
+        this.step = 10;
+        this.lastY = 0;
+    }
+    tick() {
+        super.tick();
+        if (this.lastY == this.y) this.y -= this.step;
+        if (_playerTs.Player.x > this.x) this.x += this.step;
+        else this.x -= this.step;
+        this.lastY = this.y;
+        this.y += this.step;
+    }
+}
+
+},{"./collidingEntity.ts":"nyrtV","./player.ts":"5J76T","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"pRlYD":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Enemy3", ()=>Enemy3
+);
+var _collidingEntityTs = require("./collidingEntity.ts");
+var _playerTs = require("./player.ts");
+class Enemy3 extends _collidingEntityTs.CollidingEntity {
+    constructor(state){
+        super(state, state.images["enemy03"]);
+        this.canMove = true;
+        this.step = 5;
+        this.lastY = 0;
+    }
+    tick() {
+        super.tick();
+        if (this.lastY == this.y) this.y -= this.step;
+        if (_playerTs.Player.x > this.x) this.x += this.step;
+        else this.x -= this.step;
+        this.lastY = this.y;
+        this.y += this.step;
+    }
+}
+
+},{"./collidingEntity.ts":"nyrtV","./player.ts":"5J76T","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}]},["6KnHJ","5YOvx"], "5YOvx", "parcelRequiref6ba")
 
 //# sourceMappingURL=index.eb3ccd85.js.map

@@ -23,16 +23,6 @@ export class TestingScene extends Scene {
     constructor(state: State) {
 	super(state);
 
-    if (this.state.keysPressed['b']) {
-        for (var i = 0; i < tilemap.length(); i ++){
-            for (var j = 0; j < tilemap[i].length(); j ++) {
-                if (tilemap[i][j] === '2') {
-                    tilemap[i][j] = ' ';
-                }
-            }
-        }
-    }
-
 	this.loadTilemap(tilemap);
     }
 
