@@ -44,7 +44,7 @@ export class Player extends CollidingEntity {
     collided(name: string, entity: Entity) {
 	super.collided(name, entity);
 
-	if (name.startsWith("enemy")) {
+	if (name.startsWith("enemy") || name.startsWith("spikes")) {
 		this.health -= 5;
 	}
 

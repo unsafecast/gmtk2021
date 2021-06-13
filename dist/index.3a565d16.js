@@ -411,7 +411,8 @@ const main = ()=>{
         "prize": "prize.png",
         "enemy01": "enemy/enemy1frame01.png",
         "enemy02": "enemy/enemy2frame01.png",
-        "enemy03": "enemy/enemy3frame01.png"
+        "enemy03": "enemy/enemy3frame01.png",
+        "spikes": "enemy/spikes.png"
     };
     loadImagesAndStart(images, (loaded)=>{
         let state = new _stateTs.State(loaded);
@@ -808,10 +809,10 @@ const tilemap = [
         'f',
         '1',
         '1',
-        '1',
-        '1',
-        '1',
-        '1',
+        's',
+        's',
+        's',
+        's',
         '1',
         '9',
         '9',
@@ -940,6 +941,10 @@ class Scene {
                         entity = new _enemy3Ts.Enemy3(this.state);
                         name = "enemy03";
                         break;
+                    case 's':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images['spikes']);
+                        name = `spikes_${Math.random()}`;
+                        break;
                 }
                 if (entity != null) {
                     entity.x = x * 32;
@@ -1003,7 +1008,7 @@ class Player extends _collidingEntityTs.CollidingEntity {
     }
     collided(name, entity) {
         super.collided(name, entity);
-        if (name.startsWith("enemy")) this.health -= 5;
+        if (name.startsWith("enemy") || name.startsWith("spikes")) this.health -= 5;
         if (this.state.keysPressed['b']) {
             if (name.startsWith("special01_")) {
                 for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special01_")) this.state.curScene.entities.delete(entity[0]);

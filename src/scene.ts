@@ -75,6 +75,10 @@ export class Scene {
 			entity = new Enemy3(this.state);
 			name = "enemy03";
 			break;
+			case 's':
+			entity = new CollidingEntity(this.state, this.state.images['spikes']);
+			name = `spikes_${Math.random()}`;
+			break;
 		}
 
 		if (entity != null) {

@@ -32,7 +32,8 @@ const main = () => {
 	"prize": "prize.png",
 	"enemy01": "enemy/enemy1frame01.png",
 	"enemy02": "enemy/enemy2frame01.png",
-	"enemy03": "enemy/enemy3frame01.png"
+	"enemy03": "enemy/enemy3frame01.png",
+	"spikes": "enemy/spikes.png",
     };
 
     loadImagesAndStart(images, (loaded) => {
