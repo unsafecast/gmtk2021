@@ -99,11 +99,11 @@ export class Scene {
 		    entity[1].canCollide && entity2[1].canCollide) {
 		    if (entity[1].collidesWith(entity2[1])) {
 			if (entity[1].canMove) {
-			    entity[1].collided(entity2[1]);
+			    entity[1].collided(entity2[0], entity2[1]);
 			}
 			
 			if (entity2[1].canMove) {
-			    entity2[1].collided(entity[1]);
+			    entity2[1].collided(entity[0], entity[1]);
 			}
 		    }
 		}

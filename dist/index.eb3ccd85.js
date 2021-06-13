@@ -952,8 +952,8 @@ class Scene {
             for (const entity2 of this.entities.entries()){
                 if (entity2[0] != entity[0] && entity[1].canCollide && entity2[1].canCollide) {
                     if (entity[1].collidesWith(entity2[1])) {
-                        if (entity[1].canMove) entity[1].collided(entity2[1]);
-                        if (entity2[1].canMove) entity2[1].collided(entity[1]);
+                        if (entity[1].canMove) entity[1].collided(entity2[0], entity2[1]);
+                        if (entity2[1].canMove) entity2[1].collided(entity[0], entity[1]);
                     }
                 }
             }
@@ -976,13 +976,20 @@ class Player extends _collidingEntityTs.CollidingEntity {
         super(state, state.images["character0"]);
         this.canMove = true;
         this.step = 5;
+        this.isJump = false;
         this.lastY = 0;
     }
     tick() {
         super.tick();
-        if (this.lastY == this.y) this.y -= this.step;
+        if (this.lastY == this.y) {
+            this.y -= this.step;
+            this.isJump = false;
+        }
         if (this.state.keysPressed['a']) this.x -= this.step;
-        if (this.state.keysPressed[' ']) this.y -= this.step * 2;
+        if (this.state.keysPressed[' '] && !this.isJump) {
+            this.y -= this.step * 20;
+            this.isJump = true;
+        }
         if (this.state.keysPressed['d']) this.x += this.step;
         if (this.state.keysPressed['b']) {
             for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special02_")) this.state.curScene.entities.delete(entity[0]);
@@ -995,6 +1002,20 @@ class Player extends _collidingEntityTs.CollidingEntity {
         }
         this.lastY = this.y;
         this.y += this.step;
+    }
+    collided(name, entity) {
+        super.collided(name, entity);
+        if (this.state.keysPressed['b']) {
+            if (name.startsWith("special01_")) {
+                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special01_")) this.state.curScene.entities.delete(entity[0]);
+            }
+            if (name.startsWith("special02_")) {
+                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special02_")) this.state.curScene.entities.delete(entity[0]);
+            }
+            if (name.startsWith("special03_")) {
+                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special03_")) this.state.curScene.entities.delete(entity[0]);
+            }
+        }
     }
 }
 
@@ -1010,7 +1031,7 @@ class CollidingEntity extends _entityTs.Entity {
         this.canCollide = true;
         this.step = 1;
     }
-    collided(entity) {
+    collided(name, entity) {
         // WARNING: This assumes the entity moves 5px per frame. NEEDS TO CHANGE!!!
         this.x -= this.step;
         if (this.collidesWith(entity)) this.x += this.step * 2;

@@ -8,7 +8,7 @@ export class CollidingEntity extends Entity {
 	this.step = 1;
     }
     
-    collided(entity: Entity) {
+    collided(name: string, entity: Entity) {
 	// WARNING: This assumes the entity moves 5px per frame. NEEDS TO CHANGE!!!
 	
 	this.x -= this.step;
