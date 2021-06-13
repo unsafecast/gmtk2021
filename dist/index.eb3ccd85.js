@@ -990,9 +990,7 @@ class Player extends _collidingEntityTs.CollidingEntity {
             this.y -= this.step * 10;
             this.isJump = true;
         }
-        if (this.state.keysPressed['r']) {
-            for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special03_")) this.state.curScene.entities.delete(entity[0]);
-        }
+        if (this.state.keysPressed['d']) this.x += this.step;
         this.lastY = this.y;
         this.y += this.step;
     }
