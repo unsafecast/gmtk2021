@@ -813,12 +813,12 @@ const tilemap = [
         's',
         's',
         's',
-        '1',
+        's',
         '9',
         '9',
-        '1',
-        '1',
-        '1',
+        's',
+        's',
+        's',
         '1',
         '1',
         'f',
@@ -865,7 +865,7 @@ class TestingScene extends _sceneTs.Scene {
     }
     draw(rend) {
         super.draw(rend);
-    //rend.drawText(Player.health, 100, 100);
+        rend.drawText("Press 'b' while touching a special block!", 100, 100, 100, 100);
     }
 }
 
@@ -1005,10 +1005,12 @@ class Player extends _collidingEntityTs.CollidingEntity {
         if (this.state.keysPressed['d']) this.x += this.step;
         this.lastY = this.y;
         this.y += this.step;
+        if (this.health <= 0) alert("YOU DIED!");
     }
     collided(name, entity) {
         super.collided(name, entity);
         if (name.startsWith("enemy") || name.startsWith("spikes")) this.health -= 5;
+        if (name === "prize") alert("YOU WON!!");
         if (this.state.keysPressed['b']) {
             if (name.startsWith("special01_")) {
                 for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special01_")) this.state.curScene.entities.delete(entity[0]);

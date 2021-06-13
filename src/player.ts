@@ -39,6 +39,10 @@ export class Player extends CollidingEntity {
 
 	this.lastY = this.y;
 	this.y += this.step;
+
+	if (this.health <= 0) {
+		alert("YOU DIED!");
+	}
     }
 
     collided(name: string, entity: Entity) {
@@ -46,6 +50,10 @@ export class Player extends CollidingEntity {
 
 	if (name.startsWith("enemy") || name.startsWith("spikes")) {
 		this.health -= 5;
+	}
+
+	if (name === "prize") {
+		alert("YOU WON!!");
 	}
 
 	if (this.state.keysPressed['b']) {
