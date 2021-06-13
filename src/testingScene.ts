@@ -23,7 +23,7 @@ const tilemap = [
 export class TestingScene extends Scene {
     constructor(state: State) {
 	super(state);
-        this.finish = false;
+    this.finish = true;
 
 	this.loadTilemap(tilemap);
     }
@@ -36,10 +36,6 @@ export class TestingScene extends Scene {
 	super.draw(rend);
 
 	rend.drawText("Press 'b' while touching a special block!", 100, 100, 100, 100);
-    console.log(Player.step);
-        if (Player.win) {
-            this.finish = true;
-        }
     if (this.finish) {
         this.state.setScene(new Level1(this.state));
     }
