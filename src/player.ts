@@ -13,6 +13,7 @@ export class Player extends CollidingEntity {
 	this.step = 5;
 	this.isJump = false;
 	this.lastY = 0;
+	this.health = 100;
     }
     
     tick() {
@@ -43,6 +44,10 @@ export class Player extends CollidingEntity {
     collided(name: string, entity: Entity) {
 	super.collided(name, entity);
 
+	if (name.startsWith("enemy")) {
+		this.health -= 5;
+	}
+
 	if (this.state.keysPressed['b']) {
 	    if (name.startsWith("special01_")) {
 		for (const entity of this.state.curScene.entities.entries()) {
@@ -69,4 +74,8 @@ export class Player extends CollidingEntity {
 	    }
 	}
     }
+    draw(rend: Renderer) {
+	  super.draw(rend);
+	  rend.drawText("HP: " + String(this.health), 20, 20, 100);
+	}
 }

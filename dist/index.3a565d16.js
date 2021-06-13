@@ -479,6 +479,11 @@ class Renderer {
     drawImg(img, x, y, w, h) {
         this.context.drawImage(img, x, y, w, h);
     }
+    drawText(text, x, y, size = '50px', color = "#fff") {
+        this.context.fillStyle = color;
+        this.context.font = `${size} sans serif`;
+        this.context.fillText(text, x, y);
+    }
     clear() {
         this.context.fillStyle = this.clearColor;
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -859,6 +864,7 @@ class TestingScene extends _sceneTs.Scene {
     }
     draw(rend) {
         super.draw(rend);
+    //rend.drawText(Player.health, 100, 100);
     }
 }
 
@@ -978,6 +984,7 @@ class Player extends _collidingEntityTs.CollidingEntity {
         this.step = 5;
         this.isJump = false;
         this.lastY = 0;
+        this.health = 100;
     }
     tick() {
         super.tick();
@@ -996,6 +1003,7 @@ class Player extends _collidingEntityTs.CollidingEntity {
     }
     collided(name, entity) {
         super.collided(name, entity);
+        if (name.startsWith("enemy")) this.health -= 5;
         if (this.state.keysPressed['b']) {
             if (name.startsWith("special01_")) {
                 for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special01_")) this.state.curScene.entities.delete(entity[0]);
@@ -1007,6 +1015,10 @@ class Player extends _collidingEntityTs.CollidingEntity {
                 for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special03_")) this.state.curScene.entities.delete(entity[0]);
             }
         }
+    }
+    draw(rend) {
+        super.draw(rend);
+        rend.drawText("HP: " + String(this.health), 20, 20, 100);
     }
 }
 
