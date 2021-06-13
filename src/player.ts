@@ -63,4 +63,34 @@ export class Player extends CollidingEntity {
 	this.lastY = this.y;
 	this.y += this.step;
     }
+
+    collided(name: string, entity: Entity) {
+	super.collided(name, entity);
+
+	if (this.state.keysPressed['b']) {
+	    if (name.startsWith("special01_")) {
+		for (const entity of this.state.curScene.entities.entries()) {
+		    if (entity[0].startsWith("special01_")) {
+			this.state.curScene.entities.delete(entity[0]);
+		    }
+		}
+	    }
+
+	    if (name.startsWith("special02_")) {
+		for (const entity of this.state.curScene.entities.entries()) {
+		    if (entity[0].startsWith("special02_")) {
+			this.state.curScene.entities.delete(entity[0]);
+		    }
+		}
+	    }
+
+	    if (name.startsWith("special03_")) {
+		for (const entity of this.state.curScene.entities.entries()) {
+		    if (entity[0].startsWith("special03_")) {
+			this.state.curScene.entities.delete(entity[0]);
+		    }
+		}
+	    }
+	}
+    }
 }
