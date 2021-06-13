@@ -28,7 +28,7 @@ export class Player extends CollidingEntity {
 	}
 	
 	if (this.state.keysPressed[' '] && !this.isJump) {
-		this.y -= this.step * 20;
+		this.y -= this.step * 10;
 		this.isJump = true;
 	}
 

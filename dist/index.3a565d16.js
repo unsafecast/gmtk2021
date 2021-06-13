@@ -657,7 +657,7 @@ const tilemap = [
         'a',
         '3',
         '3',
-        '3', 
+        'f', 
     ],
     [
         'f',
@@ -852,9 +852,6 @@ const tilemap = [
 class TestingScene extends _sceneTs.Scene {
     constructor(state){
         super(state);
-        if (this.state.keysPressed['b']) for(var i = 0; i < tilemap.length(); i++){
-            for(var j = 0; j < tilemap[i].length(); j++)if (tilemap[i][j] === '2') tilemap[i][j] = ' ';
-        }
         this.loadTilemap(tilemap);
     }
     tick() {
@@ -990,10 +987,19 @@ class Player extends _collidingEntityTs.CollidingEntity {
         }
         if (this.state.keysPressed['a']) this.x -= this.step;
         if (this.state.keysPressed[' '] && !this.isJump) {
-            this.y -= this.step * 20;
+            this.y -= this.step * 10;
             this.isJump = true;
         }
         if (this.state.keysPressed['d']) this.x += this.step;
+        if (this.state.keysPressed['b']) {
+            for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special02_")) this.state.curScene.entities.delete(entity[0]);
+        }
+        if (this.state.keysPressed['g']) {
+            for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special01_")) this.state.curScene.entities.delete(entity[0]);
+        }
+        if (this.state.keysPressed['r']) {
+            for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special03_")) this.state.curScene.entities.delete(entity[0]);
+        }
         this.lastY = this.y;
         this.y += this.step;
     }
