@@ -979,13 +979,20 @@ class Player extends _collidingEntityTs.CollidingEntity {
         super(state, state.images["character0"]);
         this.canMove = true;
         this.step = 5;
+        this.isJump = false;
         this.lastY = 0;
     }
     tick() {
         super.tick();
-        if (this.lastY == this.y) this.y -= this.step;
+        if (this.lastY == this.y) {
+            this.y -= this.step;
+            this.isJump = false;
+        }
         if (this.state.keysPressed['a']) this.x -= this.step;
-        if (this.state.keysPressed[' ']) this.y -= this.step * 2;
+        if (this.state.keysPressed[' '] && !this.isJump) {
+            this.y -= this.step * 20;
+            this.isJump = true;
+        }
         if (this.state.keysPressed['d']) this.x += this.step;
         this.lastY = this.y;
         this.y += this.step;
