@@ -1,5 +1,6 @@
 import { State } from "./state.ts";
 import { TestingScene } from "./testingScene.ts";
+import { StartScreen } from "./startScreen.ts";
 
 const loadImagesAndStart = (images: Dictionary<string, string>, startFun: any) => {
     let len = Object.keys(images).length;
@@ -38,7 +39,7 @@ const main = () => {
 
     loadImagesAndStart(images, (loaded) => {
 	let state = new State(loaded);
-	state.setScene(new TestingScene(state));
+	state.setScene(new StartScreen(state));
 	state.start();
     });
 }

@@ -3,6 +3,7 @@ import { State } from "./state.ts";
 import { Entity } from "./entity.ts";
 import { Player } from "./player.ts";
 import { CollidingEntity } from "./collidingEntity.ts";
+import { Level1 } from "./level1.ts";
 
 const tilemap = [
     [ 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', ],
@@ -22,6 +23,7 @@ const tilemap = [
 export class TestingScene extends Scene {
     constructor(state: State) {
 	super(state);
+        this.finish = false;
 
 	this.loadTilemap(tilemap);
     }
@@ -34,6 +36,13 @@ export class TestingScene extends Scene {
 	super.draw(rend);
 
 	rend.drawText("Press 'b' while touching a special block!", 100, 100, 100, 100);
+    console.log(Player.step);
+        if (Player.win) {
+            this.finish = true;
+        }
+    if (this.finish) {
+        this.state.setScene(new Level1(this.state));
+    }
     }
 }
 

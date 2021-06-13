@@ -4,6 +4,9 @@ import { CollidingEntity } from "./collidingEntity.ts";
 import { State } from "./state.ts";
 import { tilemap } from "./testingScene.ts";
 import { getEntity } from "./scene.ts";
+import { TestingScene } from "./testingScene.ts";
+import { Level1 } from "./level1.ts";
+import { Scene } from "./scene.ts";
 
 
 export class Player extends CollidingEntity {
@@ -14,6 +17,7 @@ export class Player extends CollidingEntity {
 	this.isJump = false;
 	this.lastY = 0;
 	this.health = 100;
+	this.win = false;
     }
     
     tick() {
@@ -53,7 +57,7 @@ export class Player extends CollidingEntity {
 	}
 
 	if (name === "prize") {
-		alert("YOU WON!!");
+		alert("YOU WON!");
 	}
 
 	if (this.state.keysPressed['b']) {

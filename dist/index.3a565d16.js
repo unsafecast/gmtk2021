@@ -382,7 +382,7 @@ function hmrAcceptRun(bundle/*: ParcelRequire */ , id/*: string */ ) {
 
 },{}],"3ARxB":[function(require,module,exports) {
 var _stateTs = require("./state.ts");
-var _testingSceneTs = require("./testingScene.ts");
+var _startScreenTs = require("./startScreen.ts");
 const loadImagesAndStart = (images, startFun)=>{
     let len = Object.keys(images).length;
     let loaded = 0;
@@ -416,13 +416,13 @@ const main = ()=>{
     };
     loadImagesAndStart(images, (loaded)=>{
         let state = new _stateTs.State(loaded);
-        state.setScene(new _testingSceneTs.TestingScene(state));
+        state.setScene(new _startScreenTs.StartScreen(state));
         state.start();
     });
 };
 main();
 
-},{"./state.ts":"6JUXn","./testingScene.ts":"XdkYl"}],"6JUXn":[function(require,module,exports) {
+},{"./state.ts":"6JUXn","./startScreen.ts":"3bFP6"}],"6JUXn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "State", ()=>State
@@ -523,12 +523,329 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"XdkYl":[function(require,module,exports) {
+},{}],"3bFP6":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "StartScreen", ()=>StartScreen
+);
+var _sceneTs = require("./scene.ts");
+var _testingSceneTs = require("./testingScene.ts");
+class StartScreen extends _sceneTs.Scene {
+    constructor(state){
+        super(state);
+    }
+    tick() {
+        super.tick();
+    }
+    draw(rend) {
+        super.draw(rend);
+        rend.drawText("Don't Break 'Em All!", 350, 100, "white");
+        rend.drawText("Press 'S' to begin", 357, 120, "red");
+        if (this.state.keysPressed['s']) this.pressed = true;
+        if (this.pressed) this.state.setScene(new _testingSceneTs.TestingScene(this.state));
+    }
+}
+
+},{"./scene.ts":"5IQ3f","@parcel/transformer-js/src/esmodule-helpers.js":"367CR","./testingScene.ts":"XdkYl"}],"5IQ3f":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Scene", ()=>Scene
+);
+var _playerTs = require("./player.ts");
+var _enemy1Ts = require("./enemy1.ts");
+var _enemy2Ts = require("./enemy2.ts");
+var _enemy3Ts = require("./enemy3.ts");
+var _collidingEntityTs = require("./collidingEntity.ts");
+class Scene {
+    constructor(state, background = null){
+        this.state = state;
+        this.entities = new Map();
+        this.background = background;
+    }
+    addEntity(name, entity) {
+        this.entities.set(name, entity);
+    }
+    getEntity(name) {
+        return this.entities.get(name);
+    }
+    loadTilemap(tilemap) {
+        tilemap.forEach((row, y)=>{
+            row.forEach((thing, x)=>{
+                let entity = null;
+                let name = "";
+                switch(thing){
+                    case 'p':
+                        entity = new _playerTs.Player(this.state);
+                        name = "player";
+                        break;
+                    case 'g':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["grass"]);
+                        name = `grass_${Math.random()}`;
+                        break;
+                    case 'f':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["floor01"]);
+                        name = `floor01_${Math.random()}`;
+                        break;
+                    case '9':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["floor02"]);
+                        name = `floor02_${Math.random()}`;
+                        break;
+                    case '1':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special01"]);
+                        name = `special01_${Math.random()}`;
+                        break;
+                    case '2':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special02"]);
+                        name = `special02_${Math.random()}`;
+                        break;
+                    case '3':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special03"]);
+                        name = `special03_${Math.random()}`;
+                        break;
+                    case 'o':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["prize"]);
+                        name = "prize";
+                        break;
+                    case 'b':
+                        entity = new _enemy1Ts.Enemy1(this.state);
+                        name = "enemy01";
+                        break;
+                    case 'r':
+                        entity = new _enemy2Ts.Enemy2(this.state);
+                        name = "enemy02";
+                        break;
+                    case 'v':
+                        entity = new _enemy3Ts.Enemy3(this.state);
+                        name = "enemy03";
+                        break;
+                    case 's':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images['spikes']);
+                        name = `spikes_${Math.random()}`;
+                        break;
+                }
+                if (entity != null) {
+                    entity.x = x * 32;
+                    entity.y = y * 32;
+                    this.addEntity(name, entity);
+                }
+            });
+        });
+    }
+    tick() {
+        for (const entity of this.entities.entries()){
+            entity[1].tick();
+            // Hehe this looks horrible
+            // But do I care? Nah...
+            // Also inneficient as fuck
+            for (const entity2 of this.entities.entries()){
+                if (entity2[0] != entity[0] && entity[1].canCollide && entity2[1].canCollide) {
+                    if (entity[1].collidesWith(entity2[1])) {
+                        if (entity[1].canMove) entity[1].collided(entity2[0], entity2[1]);
+                        if (entity2[1].canMove) entity2[1].collided(entity[0], entity[1]);
+                    }
+                }
+            }
+        }
+    }
+    draw(rend) {
+        if (this.background != null) rend.drawImg(this.background, 0, 0, rend.canvas.width, rend.canvas.height);
+        for (const entity of this.entities.entries())entity[1].draw(rend);
+    }
+}
+
+},{"./player.ts":"3Fb53","./enemy1.ts":"6zNwC","./enemy2.ts":"3wHG5","./enemy3.ts":"3kDmu","./collidingEntity.ts":"6cmbu","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"3Fb53":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Player", ()=>Player
+);
+var _collidingEntityTs = require("./collidingEntity.ts");
+class Player extends _collidingEntityTs.CollidingEntity {
+    constructor(state){
+        super(state, state.images["character0"]);
+        this.canMove = true;
+        this.step = 5;
+        this.isJump = false;
+        this.lastY = 0;
+        this.health = 100;
+        this.win = false;
+    }
+    tick() {
+        super.tick();
+        if (this.lastY == this.y) {
+            this.y -= this.step;
+            this.isJump = false;
+        }
+        if (this.state.keysPressed['a']) this.x -= this.step;
+        if (this.state.keysPressed[' '] && !this.isJump) {
+            this.y -= this.step * 10;
+            this.isJump = true;
+        }
+        if (this.state.keysPressed['d']) this.x += this.step;
+        this.lastY = this.y;
+        this.y += this.step;
+        if (this.health <= 0) alert("YOU DIED!");
+    }
+    collided(name, entity) {
+        super.collided(name, entity);
+        if (name.startsWith("enemy") || name.startsWith("spikes")) this.health -= 5;
+        if (name === "prize") alert("YOU WON!");
+        if (this.state.keysPressed['b']) {
+            if (name.startsWith("special01_")) {
+                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special01_")) this.state.curScene.entities.delete(entity[0]);
+            }
+            if (name.startsWith("special02_")) {
+                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special02_")) this.state.curScene.entities.delete(entity[0]);
+            }
+            if (name.startsWith("special03_")) {
+                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special03_")) this.state.curScene.entities.delete(entity[0]);
+            }
+        }
+    }
+    draw(rend) {
+        super.draw(rend);
+        rend.drawText("HP: " + String(this.health), 20, 20, 100);
+    }
+}
+
+},{"./collidingEntity.ts":"6cmbu","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"6cmbu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "CollidingEntity", ()=>CollidingEntity
+);
+var _entityTs = require("./entity.ts");
+class CollidingEntity extends _entityTs.Entity {
+    constructor(state, image){
+        super(state, image);
+        this.canCollide = true;
+        this.step = 1;
+    }
+    collided(name, entity) {
+        // WARNING: This assumes the entity moves 5px per frame. NEEDS TO CHANGE!!!
+        this.x -= this.step;
+        if (this.collidesWith(entity)) this.x += this.step * 2;
+        if (this.collidesWith(entity)) {
+            this.x -= this.step;
+            this.y -= this.step;
+        }
+        if (this.collidesWith(entity)) this.y += this.step * 2;
+    }
+}
+
+},{"./entity.ts":"2LMk7","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"2LMk7":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Entity", ()=>Entity
+);
+class Entity {
+    constructor(state, image){
+        this.x = 0;
+        this.y = 0;
+        this.w = 32;
+        this.h = 32;
+        this.canCollide = false;
+        this.image = image;
+        this.state = state;
+    }
+    tick() {
+    }
+    draw(rend) {
+        rend.drawImg(this.image, this.x, this.y, this.w, this.h);
+    }
+    collidesWith(entity) {
+        const left1 = this.x;
+        const right1 = this.x + this.w;
+        const top1 = this.y;
+        const bottom1 = this.y + this.h;
+        const left2 = entity.x;
+        const right2 = entity.x + entity.w;
+        const top2 = entity.y;
+        const bottom2 = entity.y + entity.h;
+        return left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2;
+    }
+    collided(entity) {
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"6zNwC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Enemy1", ()=>Enemy1
+);
+var _collidingEntityTs = require("./collidingEntity.ts");
+var _playerTs = require("./player.ts");
+class Enemy1 extends _collidingEntityTs.CollidingEntity {
+    constructor(state){
+        super(state, state.images["enemy01"]);
+        this.canMove = true;
+        this.step = 3;
+        this.lastY = 0;
+    }
+    tick() {
+        super.tick();
+        if (this.lastY == this.y) this.y -= this.step;
+        if (_playerTs.Player.x > this.x) this.x += this.step;
+        else this.x -= this.step;
+        this.lastY = this.y;
+        this.y += this.step;
+    }
+}
+
+},{"./collidingEntity.ts":"6cmbu","./player.ts":"3Fb53","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"3wHG5":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Enemy2", ()=>Enemy2
+);
+var _collidingEntityTs = require("./collidingEntity.ts");
+var _playerTs = require("./player.ts");
+class Enemy2 extends _collidingEntityTs.CollidingEntity {
+    constructor(state){
+        super(state, state.images["enemy02"]);
+        this.canMove = true;
+        this.step = 10;
+        this.lastY = 0;
+    }
+    tick() {
+        super.tick();
+        if (this.lastY == this.y) this.y -= this.step;
+        if (_playerTs.Player.x > this.x) this.x += this.step;
+        else this.x -= this.step;
+        this.lastY = this.y;
+        this.y += this.step;
+    }
+}
+
+},{"./collidingEntity.ts":"6cmbu","./player.ts":"3Fb53","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"3kDmu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Enemy3", ()=>Enemy3
+);
+var _collidingEntityTs = require("./collidingEntity.ts");
+var _playerTs = require("./player.ts");
+class Enemy3 extends _collidingEntityTs.CollidingEntity {
+    constructor(state){
+        super(state, state.images["enemy03"]);
+        this.canMove = true;
+        this.step = 5;
+        this.lastY = 0;
+    }
+    tick() {
+        super.tick();
+        if (this.lastY == this.y) this.y -= this.step;
+        if (_playerTs.Player.x > this.x) this.x += this.step;
+        else this.x -= this.step;
+        this.lastY = this.y;
+        this.y += this.step;
+    }
+}
+
+},{"./collidingEntity.ts":"6cmbu","./player.ts":"3Fb53","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"XdkYl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "TestingScene", ()=>TestingScene
 );
 var _sceneTs = require("./scene.ts");
+var _playerTs = require("./player.ts");
+var _level1Ts = require("./level1.ts");
 const tilemap = [
     [
         'a',
@@ -858,6 +1175,357 @@ const tilemap = [
 class TestingScene extends _sceneTs.Scene {
     constructor(state){
         super(state);
+        this.finish = false;
+        this.loadTilemap(tilemap);
+    }
+    tick() {
+        super.tick();
+    }
+    draw(rend) {
+        super.draw(rend);
+        rend.drawText("Press 'b' while touching a special block!", 100, 100, 100, 100);
+        console.log(_playerTs.Player.step);
+        if (_playerTs.Player.win) this.finish = true;
+        if (this.finish) this.state.setScene(new _level1Ts.Level1(this.state));
+    }
+}
+
+},{"./scene.ts":"5IQ3f","@parcel/transformer-js/src/esmodule-helpers.js":"367CR","./level1.ts":"7DR24","./player.ts":"3Fb53"}],"7DR24":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Level1", ()=>Level1
+);
+var _sceneTs = require("./scene.ts");
+const tilemap = [
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a', 
+    ],
+    [
+        'f',
+        'a',
+        'a',
+        'a',
+        'f',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a', 
+    ],
+    [
+        'f',
+        'p',
+        'a',
+        'a',
+        'f',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a', 
+    ],
+    [
+        'f',
+        'f',
+        'a',
+        'a',
+        'f',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'b',
+        'o', 
+    ],
+    [
+        'f',
+        'f',
+        'a',
+        'a',
+        'f',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        '1',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        '3',
+        '3',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'a',
+        'a',
+        '1',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        '1',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        '2',
+        '3',
+        '2',
+        '2', 
+    ],
+    [
+        'f',
+        'f',
+        'a',
+        'a',
+        '1',
+        'a',
+        'a',
+        '2',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        '1',
+        'a',
+        'a',
+        'a',
+        'a',
+        'a',
+        '3',
+        '3',
+        '3',
+        '2',
+        '2', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        'f',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '9',
+        '9',
+        '1',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        'f',
+        '1',
+        '1',
+        's',
+        's',
+        's',
+        's',
+        's',
+        '9',
+        '9',
+        's',
+        's',
+        's',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ],
+    [
+        'f',
+        'f',
+        'f',
+        'f',
+        'f',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '9',
+        '9',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        '1',
+        'f',
+        'f',
+        'f',
+        'f', 
+    ]
+];
+class Level1 extends _sceneTs.Scene {
+    constructor(state){
+        super(state);
+        this.name = '1';
         this.loadTilemap(tilemap);
     }
     tick() {
@@ -869,297 +1537,6 @@ class TestingScene extends _sceneTs.Scene {
     }
 }
 
-},{"./scene.ts":"5IQ3f","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"5IQ3f":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Scene", ()=>Scene
-);
-var _playerTs = require("./player.ts");
-var _enemy1Ts = require("./enemy1.ts");
-var _enemy2Ts = require("./enemy2.ts");
-var _enemy3Ts = require("./enemy3.ts");
-var _collidingEntityTs = require("./collidingEntity.ts");
-class Scene {
-    constructor(state, background = null){
-        this.state = state;
-        this.entities = new Map();
-        this.background = background;
-    }
-    addEntity(name, entity) {
-        this.entities.set(name, entity);
-    }
-    getEntity(name) {
-        return this.entities.get(name);
-    }
-    loadTilemap(tilemap) {
-        tilemap.forEach((row, y)=>{
-            row.forEach((thing, x)=>{
-                let entity = null;
-                let name = "";
-                switch(thing){
-                    case 'p':
-                        entity = new _playerTs.Player(this.state);
-                        name = "player";
-                        break;
-                    case 'g':
-                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["grass"]);
-                        name = `grass_${Math.random()}`;
-                        break;
-                    case 'f':
-                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["floor01"]);
-                        name = `floor01_${Math.random()}`;
-                        break;
-                    case '9':
-                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["floor02"]);
-                        name = `floor02_${Math.random()}`;
-                        break;
-                    case '1':
-                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special01"]);
-                        name = `special01_${Math.random()}`;
-                        break;
-                    case '2':
-                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special02"]);
-                        name = `special02_${Math.random()}`;
-                        break;
-                    case '3':
-                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["special03"]);
-                        name = `special03_${Math.random()}`;
-                        break;
-                    case 'o':
-                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images["prize"]);
-                        name = "prize";
-                        break;
-                    case 'b':
-                        entity = new _enemy1Ts.Enemy1(this.state);
-                        name = "enemy01";
-                        break;
-                    case 'r':
-                        entity = new _enemy2Ts.Enemy2(this.state);
-                        name = "enemy02";
-                        break;
-                    case 'v':
-                        entity = new _enemy3Ts.Enemy3(this.state);
-                        name = "enemy03";
-                        break;
-                    case 's':
-                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images['spikes']);
-                        name = `spikes_${Math.random()}`;
-                        break;
-                }
-                if (entity != null) {
-                    entity.x = x * 32;
-                    entity.y = y * 32;
-                    this.addEntity(name, entity);
-                }
-            });
-        });
-    }
-    tick() {
-        for (const entity of this.entities.entries()){
-            entity[1].tick();
-            // Hehe this looks horrible
-            // But do I care? Nah...
-            // Also inneficient as fuck
-            for (const entity2 of this.entities.entries()){
-                if (entity2[0] != entity[0] && entity[1].canCollide && entity2[1].canCollide) {
-                    if (entity[1].collidesWith(entity2[1])) {
-                        if (entity[1].canMove) entity[1].collided(entity2[0], entity2[1]);
-                        if (entity2[1].canMove) entity2[1].collided(entity[0], entity[1]);
-                    }
-                }
-            }
-        }
-    }
-    draw(rend) {
-        if (this.background != null) rend.drawImg(this.background, 0, 0, rend.canvas.width, rend.canvas.height);
-        for (const entity of this.entities.entries())entity[1].draw(rend);
-    }
-}
-
-},{"./player.ts":"3Fb53","./enemy1.ts":"6zNwC","./enemy2.ts":"3wHG5","./enemy3.ts":"3kDmu","./collidingEntity.ts":"6cmbu","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"3Fb53":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Player", ()=>Player
-);
-var _collidingEntityTs = require("./collidingEntity.ts");
-class Player extends _collidingEntityTs.CollidingEntity {
-    constructor(state){
-        super(state, state.images["character0"]);
-        this.canMove = true;
-        this.step = 5;
-        this.isJump = false;
-        this.lastY = 0;
-        this.health = 100;
-    }
-    tick() {
-        super.tick();
-        if (this.lastY == this.y) {
-            this.y -= this.step;
-            this.isJump = false;
-        }
-        if (this.state.keysPressed['a']) this.x -= this.step;
-        if (this.state.keysPressed[' '] && !this.isJump) {
-            this.y -= this.step * 10;
-            this.isJump = true;
-        }
-        if (this.state.keysPressed['d']) this.x += this.step;
-        this.lastY = this.y;
-        this.y += this.step;
-        if (this.health <= 0) alert("YOU DIED!");
-    }
-    collided(name, entity) {
-        super.collided(name, entity);
-        if (name.startsWith("enemy") || name.startsWith("spikes")) this.health -= 5;
-        if (name === "prize") alert("YOU WON!!");
-        if (this.state.keysPressed['b']) {
-            if (name.startsWith("special01_")) {
-                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special01_")) this.state.curScene.entities.delete(entity[0]);
-            }
-            if (name.startsWith("special02_")) {
-                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special02_")) this.state.curScene.entities.delete(entity[0]);
-            }
-            if (name.startsWith("special03_")) {
-                for (const entity of this.state.curScene.entities.entries())if (entity[0].startsWith("special03_")) this.state.curScene.entities.delete(entity[0]);
-            }
-        }
-    }
-    draw(rend) {
-        super.draw(rend);
-        rend.drawText("HP: " + String(this.health), 20, 20, 100);
-    }
-}
-
-},{"./collidingEntity.ts":"6cmbu","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"6cmbu":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "CollidingEntity", ()=>CollidingEntity
-);
-var _entityTs = require("./entity.ts");
-class CollidingEntity extends _entityTs.Entity {
-    constructor(state, image){
-        super(state, image);
-        this.canCollide = true;
-        this.step = 1;
-    }
-    collided(name, entity) {
-        // WARNING: This assumes the entity moves 5px per frame. NEEDS TO CHANGE!!!
-        this.x -= this.step;
-        if (this.collidesWith(entity)) this.x += this.step * 2;
-        if (this.collidesWith(entity)) {
-            this.x -= this.step;
-            this.y -= this.step;
-        }
-        if (this.collidesWith(entity)) this.y += this.step * 2;
-    }
-}
-
-},{"./entity.ts":"2LMk7","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"2LMk7":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Entity", ()=>Entity
-);
-class Entity {
-    constructor(state, image){
-        this.x = 0;
-        this.y = 0;
-        this.w = 32;
-        this.h = 32;
-        this.canCollide = false;
-        this.image = image;
-        this.state = state;
-    }
-    tick() {
-    }
-    draw(rend) {
-        rend.drawImg(this.image, this.x, this.y, this.w, this.h);
-    }
-    collidesWith(entity) {
-        const left1 = this.x;
-        const right1 = this.x + this.w;
-        const top1 = this.y;
-        const bottom1 = this.y + this.h;
-        const left2 = entity.x;
-        const right2 = entity.x + entity.w;
-        const top2 = entity.y;
-        const bottom2 = entity.y + entity.h;
-        return left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2;
-    }
-    collided(entity) {
-    }
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"6zNwC":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Enemy1", ()=>Enemy1
-);
-var _collidingEntityTs = require("./collidingEntity.ts");
-var _playerTs = require("./player.ts");
-class Enemy1 extends _collidingEntityTs.CollidingEntity {
-    constructor(state){
-        super(state, state.images["enemy01"]);
-        this.canMove = true;
-        this.step = 3;
-        this.lastY = 0;
-    }
-    tick() {
-        super.tick();
-        if (this.lastY == this.y) this.y -= this.step;
-        if (_playerTs.Player.x > this.x) this.x += this.step;
-        else this.x -= this.step;
-        this.lastY = this.y;
-        this.y += this.step;
-    }
-}
-
-},{"./collidingEntity.ts":"6cmbu","./player.ts":"3Fb53","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"3wHG5":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Enemy2", ()=>Enemy2
-);
-var _collidingEntityTs = require("./collidingEntity.ts");
-var _playerTs = require("./player.ts");
-class Enemy2 extends _collidingEntityTs.CollidingEntity {
-    constructor(state){
-        super(state, state.images["enemy02"]);
-        this.canMove = true;
-        this.step = 10;
-        this.lastY = 0;
-    }
-    tick() {
-        super.tick();
-        if (this.lastY == this.y) this.y -= this.step;
-        if (_playerTs.Player.x > this.x) this.x += this.step;
-        else this.x -= this.step;
-        this.lastY = this.y;
-        this.y += this.step;
-    }
-}
-
-},{"./collidingEntity.ts":"6cmbu","./player.ts":"3Fb53","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}],"3kDmu":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Enemy3", ()=>Enemy3
-);
-var _collidingEntityTs = require("./collidingEntity.ts");
-var _playerTs = require("./player.ts");
-class Enemy3 extends _collidingEntityTs.CollidingEntity {
-    constructor(state){
-        super(state, state.images["enemy03"]);
-        this.canMove = true;
-        this.step = 5;
-        this.lastY = 0;
-    }
-    tick() {
-        super.tick();
-        if (this.lastY == this.y) this.y -= this.step;
-        if (_playerTs.Player.x > this.x) this.x += this.step;
-        else this.x -= this.step;
-        this.lastY = this.y;
-        this.y += this.step;
-    }
-}
-
-},{"./collidingEntity.ts":"6cmbu","./player.ts":"3Fb53","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}]},["1pC7r","3ARxB"], "3ARxB", "parcelRequiref6ba")
+},{"./scene.ts":"5IQ3f","@parcel/transformer-js/src/esmodule-helpers.js":"367CR"}]},["1pC7r","3ARxB"], "3ARxB", "parcelRequiref6ba")
 
 //# sourceMappingURL=index.3a565d16.js.map
