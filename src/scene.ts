@@ -79,6 +79,10 @@ export class Scene {
 			entity = new CollidingEntity(this.state, this.state.images['spikes']);
 			name = `spikes_${Math.random()}`;
 			break;
+			case '_':
+			entity = new CollidingEntity(this.state, this.state.images['bridge']);
+			name = `bridge_${Math.random()}`;
+			break;
 		}
 
 		if (entity != null) {

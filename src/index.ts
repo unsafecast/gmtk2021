@@ -35,6 +35,7 @@ const main = () => {
 	"enemy02": "enemy/enemy2frame01.png",
 	"enemy03": "enemy/enemy3frame01.png",
 	"spikes": "enemy/spikes.png",
+	"bridge": "terrain/bridge.png"
     };
 
     loadImagesAndStart(images, (loaded) => {

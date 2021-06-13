@@ -412,7 +412,8 @@ const main = ()=>{
         "enemy01": "enemy/enemy1frame01.png",
         "enemy02": "enemy/enemy2frame01.png",
         "enemy03": "enemy/enemy3frame01.png",
-        "spikes": "enemy/spikes.png"
+        "spikes": "enemy/spikes.png",
+        "bridge": "terrain/bridge.png"
     };
     loadImagesAndStart(images, (loaded)=>{
         let state = new _stateTs.State(loaded);
@@ -621,6 +622,10 @@ class Scene {
                     case 's':
                         entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images['spikes']);
                         name = `spikes_${Math.random()}`;
+                        break;
+                    case '_':
+                        entity = new _collidingEntityTs.CollidingEntity(this.state, this.state.images['bridge']);
+                        name = `bridge_${Math.random()}`;
                         break;
                 }
                 if (entity != null) {
@@ -1054,9 +1059,9 @@ const tilemap = [
         'f',
         'f',
         '1',
-        'f',
-        'f',
-        'f',
+        '9',
+        '_',
+        '_',
         'f',
         'f',
         'f',
@@ -1081,9 +1086,9 @@ const tilemap = [
         'f',
         '1',
         '1',
+        '9',
         '1',
-        'f',
-        'f',
+        '1',
         'f',
         'f',
         'f',
@@ -1108,9 +1113,9 @@ const tilemap = [
         '9',
         '1',
         '1',
+        '9',
         '1',
         '1',
-        'f',
         'f',
         'f',
         'f',
@@ -1135,10 +1140,10 @@ const tilemap = [
         '9',
         's',
         's',
-        's',
+        '9',
         '1',
         '1',
-        'f',
+        '1',
         'f',
         'f',
         'f',
@@ -1162,11 +1167,11 @@ const tilemap = [
         '9',
         '1',
         '1',
+        '9',
         '1',
         '1',
         '1',
         '1',
-        'f',
         'f',
         'f',
         'f', 
