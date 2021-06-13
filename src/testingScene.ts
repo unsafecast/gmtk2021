@@ -32,6 +32,8 @@ export class TestingScene extends Scene {
 
     draw(rend: Renderer) {
 	super.draw(rend);
+
+	rend.drawText("Henlo", 100, 100);
     }
 }
 

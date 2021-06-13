@@ -21,6 +21,12 @@ export class Renderer {
 	this.context.drawImage(img, x, y, w, h);
     }
 
+    drawText(text: string, x: number, y: number, size: string = '50px', color: string = "#fff") {
+	this.context.fillStyle = color;
+	this.context.font = `${size} sans serif`;
+	this.context.fillText(text, x, y);
+    }
+
     clear() {
 	this.context.fillStyle = this.clearColor;
 	this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);

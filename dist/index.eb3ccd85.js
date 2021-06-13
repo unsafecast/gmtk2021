@@ -479,6 +479,11 @@ class Renderer {
     drawImg(img, x, y, w, h) {
         this.context.drawImage(img, x, y, w, h);
     }
+    drawText(text, x, y, size = '50px', color = "#fff") {
+        this.context.fillStyle = color;
+        this.context.font = `${size} sans serif`;
+        this.context.fillText(text, x, y);
+    }
     clear() {
         this.context.fillStyle = this.clearColor;
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -859,6 +864,7 @@ class TestingScene extends _sceneTs.Scene {
     }
     draw(rend) {
         super.draw(rend);
+        rend.drawText("Henlo", 100, 100);
     }
 }
 
